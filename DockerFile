@@ -7,24 +7,24 @@ WORKDIR /app
 COPY . .
 
 # Move into frontend directory
-WORKDIR /app/frontend
+WORKDIR /app/apps/OpenSign
 
-# Install dependencies and build
+# Install and build
 RUN npm install
 RUN npm run build
 
-# Inject env.js
+# Inject runtime config
 RUN echo 'window.RUNTIME_ENV = { REACT_APP_SERVERURL: "https://keysign.usekeys.co" };' > build/env.js
 
 # Serve stage
-FROM node:18-alpine
+FROM node:18-slim
 
 WORKDIR /app
 
 RUN npm install -g serve
 
 # Copy built frontend
-COPY --from=builder /app/frontend/build ./build
+COPY --from=builder /app/apps/OpenSign/build ./build
 
 EXPOSE 3000
 
