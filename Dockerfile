@@ -13,7 +13,7 @@ RUN npm install
 WORKDIR /app/apps/OpenSign
 RUN npm install
 RUN npm run build
-RUN echo 'window.RUNTIME_ENV = { REACT_APP_SERVERURL: "https://keysign.usekeys.co/api/app" };' > build/env.js
+RUN echo 'window.RUNTIME_ENV = { REACT_APP_SERVERURL: "https://p02--keysign--46qt8mw4frvn.code.run/api/app" };' > build/env.js
 
 # Install serve for frontend
 RUN npm install -g serve
