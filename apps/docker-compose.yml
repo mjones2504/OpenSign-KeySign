@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_SERVERURL=http://keysign.usekeys.co
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "1337:1337"
+    environment:
+      - APP_ID=keysign
+      - MASTER_KEY=BtDOT1hrPgEPT2vCr9PMB6HTuGpRH3HEHCeiJSc0K1f
+      - SERVER_URL=http://keysign.usekeys.co
+      - DATABASE_URI=mongodb://2f03f537ea5eaa9f:fa2a71dfc132e5846b4b9e21424b09b8@mongo-0.keysigndb--46qt8mw4frvn.addon.code.run:27017/694516348e2b?replicaSet=rs0&authSource=694516348e2b&tls=true
+      - PARSE_MOUNT=/api/app
+      - JWT_SECRET=BtDOT1hrPgEPT2vCr9PMB6HTuGpRH3HEHCeiJSc0K1f
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
