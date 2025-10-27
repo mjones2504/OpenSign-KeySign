@@ -1,35 +1,31 @@
-# Base image with Node.js
+# Build stage
 FROM node:18 AS builder
 
-# Set working directory
 WORKDIR /app
 
-# Copy source code
+# Copy everything
 COPY . .
 
-# Install dependencies
-RUN npm install
+# Move into frontend directory
+WORKDIR /app/frontend
 
-# Build the frontend
+# Install dependencies and build
+RUN npm install
 RUN npm run build
 
-# Inject runtime environment config
-# This creates env.js with your public HOST_URL
+# Inject env.js
 RUN echo 'window.RUNTIME_ENV = { REACT_APP_SERVERURL: "https://keysign.usekeys.co" };' > build/env.js
 
-# Use a lightweight server to serve static files
+# Serve stage
 FROM node:18-alpine
 
 WORKDIR /app
 
-# Install serve package globally
 RUN npm install -g serve
 
-# Copy built files from builder stage
-COPY --from=builder /app/build ./build
+# Copy built frontend
+COPY --from=builder /app/frontend/build ./build
 
-# Expose port 3000
 EXPOSE 3000
 
-# Start the app
 CMD ["serve", "-s", "build", "-l", "3000"]
