@@ -234,8 +234,8 @@ if (!process.env.TESTING) {
     // console.log('isWindows', isWindows);
     createContactIndex();
     const migrate = isWindows
-      ? `set APPLICATION_ID=${serverAppId}&& set SERVER_URL=http://localhost:${port}${mountPath}&& set MASTER_KEY=${process.env.MASTER_KEY}&& npx parse-dbtool migrate`
-      : `APPLICATION_ID=${serverAppId} SERVER_URL=http://localhost:${port}${mountPath} MASTER_KEY=${process.env.MASTER_KEY} npx parse-dbtool migrate`;
+      ? `set APPLICATION_ID=${serverAppId}&& set SERVER_URL=https://localhost:${port}${mountPath}&& set MASTER_KEY=${process.env.MASTER_KEY}&& npx parse-dbtool migrate`
+      : `APPLICATION_ID=${serverAppId} SERVER_URL=https://localhost:${port}${mountPath} MASTER_KEY=${process.env.MASTER_KEY} npx parse-dbtool migrate`;
     setTimeout(() => {
     exec(migrate, (error, stdout, stderr) => {
       if (error) {
