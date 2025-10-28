@@ -103,9 +103,9 @@ export const config = {
   maxUploadSize: '100mb',
   masterKey: process.env.MASTER_KEY, //Add your master key here. Keep it secret!
   masterKeyIps: ['0.0.0.0/0', '::/0'], // '::1'
-  serverURL: cloudServerUrl, // Don't forget to change to https if needed
+  serverURL: "https://p02--keysign--46qt8mw4frvn.code.run/api/app", // Don't forget to change to https if needed
   verifyUserEmails: false,
-  publicServerURL: process.env.SERVER_URL || cloudServerUrl,
+  publicServerURL: "https://p02--keysign--46qt8mw4frvn.code.run/api/app",
   // Your apps name. This will appear in the subject and body of the emails that are sent.
   appName: appName,
   allowClientClassCreation: false,
@@ -181,7 +181,7 @@ function getUserIP(request) {
 app.use(async function (req, res, next) {
   const isFilePath = req.path.includes('files') || false;
   if (isFilePath && req.method.toLowerCase() === 'get') {
-    const serverUrl = new URL(process.env.SERVER_URL);
+    const serverUrl = new URL(https://p02--keysign--46qt8mw4frvn.code.run/api/app);
     const origin = serverUrl.pathname === '/api/app' ? serverUrl.origin + '/api' : serverUrl.origin;
     const fileUrl = origin + req.originalUrl;
     const params = fileUrl?.split('?')?.[1];
