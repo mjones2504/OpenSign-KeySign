@@ -20,4 +20,4 @@ RUN npm install -g serve
 
 # Start both frontend and backend
 WORKDIR /app
-CMD ["sh", "-c", "serve -s apps/OpenSign/build -l 3000 & npm --prefix apps/OpenSignServer start"]
+CMD ["sh", "-c", "PORT=1337 npm --prefix apps/OpenSignServer start & serve -s apps/OpenSign/build -l 3000"]
