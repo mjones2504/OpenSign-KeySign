@@ -7,7 +7,7 @@ import { parseUploadFile } from './utils/fileUtils.js';
 
 dotenv.config({ quiet: true });
 
-export const cloudServerUrl = 'https://localhost:1337/app';
+export const cloudServerUrl = 'p02--keysign--46qt8mw4frvn.code.run/app';
 export const serverAppId = process.env.APP_ID || 'opensign';
 export const appName = 'OpenSign™';
 export const prefillDraftDocWidget = ['date', 'textbox', 'checkbox', 'radio button', 'image'];
