@@ -17,8 +17,12 @@ RUN npm run build
 # Inject runtime config and monkey patch fetch
 RUN echo 'window.RUNTIME_ENV = { REACT_APP_SERVERURL: "https://p02--keysign--46qt8mw4frvn.code.run/api/app" };' > build/env.js \
  && echo 'window.fetch = ((orig => (url, opts) => { \
-  if (typeof url === "string" && url.startsWith("/functions/")) { \
-    url = "https://p02--keysign--46qt8mw4frvn.code.run/api/app" + url; \
+  if (typeof url === "string") { \
+    if (url.startsWith("/functions/")) { \
+      url = "https://p02--keysign--46qt8mw4frvn.code.run/api/app" + url; \
+    } else if (url.startsWith("https://keysign.usekeys.co/api/app/functions/")) { \
+      url = url.replace("https://keysign.usekeys.co/api/app", "https://p02--keysign--46qt8mw4frvn.code.run/api/app"); \
+    } \
   } \
   return orig(url, opts); \
 })(window.fetch));' >> build/env.js
