@@ -15,6 +15,7 @@ RUN npm install
 RUN npm run build
 
 # Inject runtime config and monkey patch fetch
+# Inject runtime config and monkey patch fetch + axios
 RUN echo 'window.RUNTIME_ENV = { REACT_APP_SERVERURL: "https://p02--keysign--46qt8mw4frvn.code.run/api/app" };' > build/env.js \
  && echo 'window.fetch = ((orig => (url, opts) => { \
   if (typeof url === "string") { \
@@ -25,7 +26,20 @@ RUN echo 'window.RUNTIME_ENV = { REACT_APP_SERVERURL: "https://p02--keysign--46q
     } \
   } \
   return orig(url, opts); \
-})(window.fetch));' >> build/env.js
+})(window.fetch));' >> build/env.js \
+ && echo 'if (window.axios) { \
+  const originalAxios = window.axios; \
+  window.axios = function (...args) { \
+    if (typeof args[0] === "string") { \
+      if (args[0].startsWith("/functions/")) { \
+        args[0] = "https://p02--keysign--46qt8mw4frvn.code.run/api/app" + args[0]; \
+      } else if (args[0].startsWith("https://keysign.usekeys.co/api/app/functions/")) { \
+        args[0] = args[0].replace("https://keysign.usekeys.co/api/app", "https://p02--keysign--46qt8mw4frvn.code.run/api/app"); \
+      } \
+    } \
+    return originalAxios(...args); \
+  }; \
+}' >> build/env.js
 
 # Install serve for frontend
 RUN npm install -g serve
